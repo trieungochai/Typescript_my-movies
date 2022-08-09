@@ -7,11 +7,18 @@ import {
   Toolbar,
   Typography,
 } from "@material-ui/core";
-import { useState, ChangeEvent } from "react";
+import { useState, ChangeEvent, useEffect } from "react";
 import WelcomeMessage from "./WelcomeMessage";
 
 const Navbar = () => {
-  const [position, setPosition] = useState("Full-stack Developer");
+  const [position, setPosition] = useState<string>("Full-stack Developer");
+  const [time, setTime] = useState<Date>(() => new Date(Date.now()));
+
+  useEffect(() => {
+    const timer = setInterval(() => setTime(new Date(Date.now())), 1000);
+    return () => clearInterval(timer);
+  }, []);
+
   const onPositionChange = (
     event: ChangeEvent<{
       value: unknown;
@@ -45,6 +52,11 @@ const Navbar = () => {
                   </MenuItem>
                 </Select>
               </FormControl>
+            </Box>
+          </Box>
+          <Box textAlign="center">
+            <Box my={1}>
+              <Typography variant="h6">{time.toUTCString()}</Typography>
             </Box>
           </Box>
         </Box>
